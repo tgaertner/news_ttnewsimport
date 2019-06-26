@@ -183,6 +183,9 @@ The result can still lead in empty slugs fields, which can be manually updated v
 	# Run upgrade wizard:newsSlug
 	./typo3cms upgrade:wizard newsSlug
 
+Additional by TG
+----------------
+
 Known issues
 ------------
 see FAQ Section in
