@@ -5,7 +5,7 @@
  ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = array(
-	'title' => 'tt_news importer',
+	'title' => 'tt_news importer (fork by T.Gaertner)',
 	'description' => 'Importer of ext:tt_news items to ext:news',
 	'category' => 'be',
 	'author' => 'Frans Saris',
@@ -21,7 +21,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'modify_tables' => '',
 	'clearCacheOnLoad' => 1,
 	'lockType' => '',
-	'version' => '2.0.0',
+	'version' => '2.0.1',
 	'constraints' => array(
 		'depends' => array(
 			'typo3' => '6.2.4-9.5.99',
