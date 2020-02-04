@@ -196,31 +196,45 @@ class TTNewsNewsDataProviderService implements DataProviderServiceInterface, \TY
 					'showinpreview' => (int)$count == 0
 				);
 				$count++;
-			}
-		}
+            }
+        }
 
-		if (!empty($row['image'])) {
-			$images = GeneralUtility::trimExplode(',', $row['image'], TRUE);
-			$captions = GeneralUtility::trimExplode(chr(10), $row['imagecaption'], FALSE);
-			$alts = GeneralUtility::trimExplode(chr(10), $row['imagealttext'], FALSE);
-			$titles = GeneralUtility::trimExplode(chr(10), $row['imagetitletext'], FALSE);
+        $images = [];
 
-			$i = 0;
-			foreach ($images as $image) {
-				$media[] = array(
-					'title' => $titles[$i],
-					'alt' => $alts[$i],
-					'caption' => $captions[$i],
-					'image' => 'uploads/pics/' . $image,
-					'type' => 0,
-					'showinpreview' => (int)$count == 0
-				);
-				$i ++;
-				$count ++;
-			}
-		}
+        if (!empty($row['image']) ) {
+            $images = GeneralUtility::trimExplode(',', $row['image'], TRUE);
+        } elseif ($row['sys_language_uid'] > 0) {
+            $parentRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*',
+                'tt_news',
+                'uid=' . $row['l18n_parent']
+            );
+            $parentRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($parentRes);
 
-		$media = array_merge($media, $this->getMultimediaItems($row));
+            if (!empty($parentRow['image']) ){
+                $images = GeneralUtility::trimExplode(',', $parentRow['image'], TRUE);
+            }
+        }
+
+        $captions = GeneralUtility::trimExplode(chr(10), $row['imagecaption'], FALSE);
+        $alts = GeneralUtility::trimExplode(chr(10), $row['imagealttext'], FALSE);
+        $titles = GeneralUtility::trimExplode(chr(10), $row['imagetitletext'], FALSE);
+
+        $i = 0;
+        foreach ($images as $image) {
+            $media[] = array(
+                'title' => $titles[$i],
+                'alt' => $alts[$i],
+                'caption' => $captions[$i],
+                'image' => 'uploads/pics/' . $image,
+                'type' => 0,
+                'showinpreview' => (int)$count == 0
+            );
+            $i ++;
+            $count ++;
+        }
+
+
+        $media = array_merge($media, $this->getMultimediaItems($row));
 
 		return $media;
 	}
